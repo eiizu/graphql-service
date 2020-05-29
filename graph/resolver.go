@@ -7,13 +7,14 @@ import (
 //go:generate go run github.com/99designs/gqlgen
 
 type Store interface {
-	CreatePatient(model.Patient) error
-	CreateAppointment(model.Appointment) error
-	CreateProvider(model.Provider) error
-	FetchPatient() *model.Patient
-	FetchProvider() *model.Provider
-	FetchAppointment() *model.Appointment
-	FetchAppointments() []*model.Appointment
+	CreatePatient(*model.Patient) error
+	CreateAppointment(*model.Appointment) error
+	CreateProvider(*model.Provider) error
+	FetchPatient(string) (*model.Patient, error)
+	FetchProvider(string) (*model.Provider, error)
+	FetchPatients() ([]*model.Patient, error)
+	FetchProviders() ([]*model.Provider, error)
+	FetchAppointments() ([]*model.Appointment, error)
 }
 
 type Resolver struct {

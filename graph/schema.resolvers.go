@@ -5,6 +5,7 @@ package graph
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -13,9 +14,35 @@ import (
 )
 
 func (r *mutationResolver) CreateAppointment(ctx context.Context, input model.NewAppointment) (*model.Appointment, error) {
+
+	patient, err := r.Store.FetchPatient(input.PatientID)
+	if err != nil {
+		return nil, err
+	}
+
+	provider, err := r.Store.FetchProvider(input.ProviderID)
+	if err != nil {
+		return nil, err
+	}
+
+	if patient == nil {
+		return nil, fmt.Errorf("patient with id: %s, not found", input.PatientID)
+	}
+
+	if provider == nil {
+		return nil, fmt.Errorf("provider with id: %s, not found", input.ProviderID)
+	}
+
 	appointment := &model.Appointment{
-		ID:   uuid.New().String(),
-		Date: time.Now().String(),
+		ID:       uuid.New().String(),
+		Date:     time.Now().String(),
+		Patient:  patient,
+		Provider: provider,
+	}
+
+	err = r.Store.CreateAppointment(appointment)
+	if err != nil {
+		return nil, err
 	}
 
 	return appointment, nil
@@ -27,6 +54,11 @@ func (r *mutationResolver) CreatePatient(ctx context.Context, input model.NewPat
 		Name: input.Name,
 	}
 
+	err := r.Store.CreatePatient(patient)
+	if err != nil {
+		return nil, err
+	}
+
 	return patient, nil
 }
 
@@ -36,19 +68,39 @@ func (r *mutationResolver) CreateProvider(ctx context.Context, input model.NewPr
 		Name: input.Name,
 	}
 
+	err := r.Store.CreateProvider(provider)
+	if err != nil {
+		return nil, err
+	}
+
 	return provider, nil
 }
 
 func (r *queryResolver) Appointments(ctx context.Context) ([]*model.Appointment, error) {
-	return nil, nil
+	appointments, err := r.Store.FetchAppointments()
+	if err != nil {
+		return nil, err
+	}
+
+	return appointments, nil
 }
 
 func (r *queryResolver) Patients(ctx context.Context) ([]*model.Patient, error) {
-	return nil, nil
+	patients, err := r.Store.FetchPatients()
+	if err != nil {
+		return nil, err
+	}
+
+	return patients, nil
 }
 
 func (r *queryResolver) Providers(ctx context.Context) ([]*model.Provider, error) {
-	return nil, nil
+	providers, err := r.Store.FetchProviders()
+	if err != nil {
+		return nil, err
+	}
+
+	return providers, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
