@@ -323,7 +323,6 @@ type Mutation {
 	createPatient(input:NewPatient!): Patient!
 	createProvider(input:NewProvider!): Provider!
 }
-
 `, BuiltIn: false},
 }
 var parsedSchema = gqlparser.MustLoadSchema(sources...)

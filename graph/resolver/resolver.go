@@ -1,4 +1,4 @@
-package graph
+package resolver
 
 import (
 	"gitlab.srconnect.io/acuevas/graphql-server/graph/model"
@@ -20,4 +20,10 @@ type Store interface {
 
 type Resolver struct {
 	Store Store
+}
+
+func New(store Store) *Resolver {
+	return &Resolver{
+		Store: store,
+	}
 }

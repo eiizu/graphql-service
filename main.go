@@ -7,8 +7,8 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"gitlab.srconnect.io/acuevas/graphql-server/graph"
 	"gitlab.srconnect.io/acuevas/graphql-server/graph/generated"
+	"gitlab.srconnect.io/acuevas/graphql-server/graph/resolver"
 	"gitlab.srconnect.io/acuevas/graphql-server/graph/store"
 )
 
@@ -23,9 +23,7 @@ func main() {
 	srv := handler.NewDefaultServer(
 		generated.NewExecutableSchema(
 			generated.Config{
-				Resolvers: &graph.Resolver{
-					Store: store.New(),
-				},
+				Resolvers: resolver.New(store.New()),
 			},
 		))
 
