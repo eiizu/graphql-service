@@ -11,9 +11,10 @@ type Store interface {
 	CreateAppointment(*model.Appointment) error
 	CreateProvider(*model.Provider) error
 	FetchPatient(string) (*model.Patient, error)
-	FetchProvider(string) (*model.Provider, error)
 	FetchPatients() ([]*model.Patient, error)
 	FetchProviders() ([]*model.Provider, error)
+	FetchProvider(string) (*model.Provider, error)
+	FetchAppointment(string) (*model.Appointment, error)
 	FetchAppointments() ([]*model.Appointment, error)
 }
 

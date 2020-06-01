@@ -110,6 +110,31 @@ func (s *Store) FetchProvider(providerID string) (*model.Provider, error) {
 	return result, nil
 }
 
+func (s *Store) FetchAppointment(appointmentID string) (*model.Appointment, error) {
+	row := s.DB.QueryRow(
+		`SELECT id, date, patientId, providerId
+		 FROM appointments
+		 WHERE id=$1`, appointmentID)
+
+	var id, date, patientID, providerID string
+	err := row.Scan(&id, &date, &patientID, &providerID)
+	if err != nil {
+		return nil, err
+	}
+	result := &model.Appointment{
+		ID:   id,
+		Date: date,
+		Patient: &model.Patient{
+			ID: patientID,
+		},
+		Provider: &model.Provider{
+			ID: providerID,
+		},
+	}
+
+	return result, nil
+}
+
 func (s *Store) FetchPatients() ([]*model.Patient, error) {
 	rows, err := s.DB.Query(
 		`SELECT id, name
@@ -162,30 +187,26 @@ func (s *Store) FetchProviders() ([]*model.Provider, error) {
 
 func (s *Store) FetchAppointments() ([]*model.Appointment, error) {
 	rows, err := s.DB.Query(
-		`SELECT a.id, a.date, a.patientId, a.providerId, pa.name, pro.name
-		 FROM appointments as a
-		 LEFT JOIN providers as pro ON a.providerId = pro.id
-		 LEFT JOIN patients as pa ON a.patientId = pa.id`)
+		`SELECT id, date, patientId, providerId
+		 FROM appointments`)
 	if err != nil {
 		return nil, err
 	}
 
 	results := make([]*model.Appointment, 0)
 	for rows.Next() {
-		var id, date, patientID, providerID, patientName, providerName string
-		if err := rows.Scan(&id, &date, &patientID, &providerID, &patientName, &providerName); err != nil {
+		var id, date, patientID, providerID string
+		if err := rows.Scan(&id, &date, &patientID, &providerID); err != nil {
 			return nil, err
 		}
 		result := &model.Appointment{
 			ID:   id,
 			Date: date,
 			Patient: &model.Patient{
-				ID:   patientID,
-				Name: patientName,
+				ID: patientID,
 			},
 			Provider: &model.Provider{
-				ID:   providerID,
-				Name: providerName,
+				ID: providerID,
 			},
 		}
 

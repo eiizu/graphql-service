@@ -35,6 +35,7 @@ type Config struct {
 }
 
 type ResolverRoot interface {
+	Appointment() AppointmentResolver
 	Mutation() MutationResolver
 	Query() QueryResolver
 }
@@ -73,6 +74,10 @@ type ComplexityRoot struct {
 	}
 }
 
+type AppointmentResolver interface {
+	Patient(ctx context.Context, obj *model.Appointment) (*model.Patient, error)
+	Provider(ctx context.Context, obj *model.Appointment) (*model.Provider, error)
+}
 type MutationResolver interface {
 	CreateAppointment(ctx context.Context, input model.NewAppointment) (*model.Appointment, error)
 	CreatePatient(ctx context.Context, input model.NewPatient) (*model.Patient, error)
@@ -498,13 +503,13 @@ func (ec *executionContext) _Appointment_patient(ctx context.Context, field grap
 		Object:   "Appointment",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Patient, nil
+		return ec.resolvers.Appointment().Patient(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -532,13 +537,13 @@ func (ec *executionContext) _Appointment_provider(ctx context.Context, field gra
 		Object:   "Appointment",
 		Field:    field,
 		Args:     nil,
-		IsMethod: false,
+		IsMethod: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Provider, nil
+		return ec.resolvers.Appointment().Provider(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2128,23 +2133,41 @@ func (ec *executionContext) _Appointment(ctx context.Context, sel ast.SelectionS
 		case "id":
 			out.Values[i] = ec._Appointment_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "date":
 			out.Values[i] = ec._Appointment_date(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "patient":
-			out.Values[i] = ec._Appointment_patient(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Appointment_patient(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		case "provider":
-			out.Values[i] = ec._Appointment_provider(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Appointment_provider(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}

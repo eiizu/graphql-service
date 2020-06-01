@@ -54,3 +54,9 @@ models:
       - github.com/99designs/gqlgen/graphql.Int
       - github.com/99designs/gqlgen/graphql.Int64
       - github.com/99designs/gqlgen/graphql.Int32
+  Appointment:
+    fields:
+      patient:
+        resolver: true
+      provider:
+        resolver: true

@@ -13,20 +13,45 @@ import (
 	"gitlab.srconnect.io/acuevas/graphql-server/graph/model"
 )
 
-func (r *mutationResolver) CreateAppointment(ctx context.Context, input model.NewAppointment) (*model.Appointment, error) {
-
-	patient, err := r.Store.FetchPatient(input.PatientID)
+func (r *appointmentResolver) Patient(ctx context.Context, obj *model.Appointment) (*model.Patient, error) {
+	patient, err := r.Store.FetchPatient(obj.Patient.ID)
 	if err != nil {
 		return nil, err
 	}
 
-	provider, err := r.Store.FetchProvider(input.ProviderID)
+	if patient == nil {
+		return nil, fmt.Errorf("patient with id: %s, not found", obj.Patient.ID)
+	}
+
+	return patient, nil
+}
+
+func (r *appointmentResolver) Provider(ctx context.Context, obj *model.Appointment) (*model.Provider, error) {
+	provider, err := r.Store.FetchProvider(obj.Provider.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	if provider == nil {
+		return nil, fmt.Errorf("provider with id: %s, not found", obj.Provider.ID)
+	}
+
+	return provider, nil
+}
+
+func (r *mutationResolver) CreateAppointment(ctx context.Context, input model.NewAppointment) (*model.Appointment, error) {
+	patient, err := r.Store.FetchPatient(input.PatientID)
 	if err != nil {
 		return nil, err
 	}
 
 	if patient == nil {
 		return nil, fmt.Errorf("patient with id: %s, not found", input.PatientID)
+	}
+
+	provider, err := r.Store.FetchProvider(input.ProviderID)
+	if err != nil {
+		return nil, err
 	}
 
 	if provider == nil {
@@ -103,11 +128,15 @@ func (r *queryResolver) Providers(ctx context.Context) ([]*model.Provider, error
 	return providers, nil
 }
 
+// Appointment returns generated.AppointmentResolver implementation.
+func (r *Resolver) Appointment() generated.AppointmentResolver { return &appointmentResolver{r} }
+
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 
 // Query returns generated.QueryResolver implementation.
 func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
+type appointmentResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
