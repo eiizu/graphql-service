@@ -30,7 +30,7 @@ type Loaders struct {
 func (dl DataLoader) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), loadersKey, &Loaders{
-			ProviderByID: dl.NewProviderLoader(),
+			ProviderByID: dl.GetProviderLoader(),
 		})
 
 		r = r.WithContext(ctx)

@@ -6,7 +6,7 @@ import (
 	"gitlab.srconnect.io/acuevas/graphql-server/graph/model"
 )
 
-func (dl DataLoader) NewProviderLoader() ProviderLoader {
+func (dl DataLoader) GetProviderLoader() ProviderLoader {
 	return ProviderLoader{
 		maxBatch: 100,
 		wait:     1 * time.Millisecond,
