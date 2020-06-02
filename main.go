@@ -22,6 +22,7 @@ func main() {
 	}
 
 	db := store.New()
+	dl := dataloader.New(db)
 
 	srv := handler.NewDefaultServer(
 		generated.NewExecutableSchema(
@@ -31,7 +32,7 @@ func main() {
 		))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", dataloader.Middleware(db, srv))
+	http.Handle("/query", dl.Middleware(srv))
 
 	log.Printf("server running on localhost:%s", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))

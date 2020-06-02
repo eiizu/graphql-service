@@ -30,5 +30,5 @@ func (r *appointmentResolver) Patient(ctx context.Context, obj *model.Appointmen
 }
 
 func (r *appointmentResolver) Provider(ctx context.Context, obj *model.Appointment) (*model.Provider, error) {
-	return dataloader.GetProviderLoader(ctx).Load(obj.Provider.ID)
+	return dataloader.For(ctx).ProviderByID.Load(obj.Provider.ID)
 }
