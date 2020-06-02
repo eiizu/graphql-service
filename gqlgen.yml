@@ -59,3 +59,7 @@ models:
         resolver: true
       provider:
         resolver: true
+  Patient:
+    fields:
+      appointments:
+        resolver: true

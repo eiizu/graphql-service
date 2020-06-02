@@ -1,6 +1,7 @@
 type Patient {
 	id: ID!
 	name: String!
+	appointments: [Appointment!]!
 }
 
 type Provider {
@@ -23,6 +24,7 @@ input NewAppointment {
 
 input NewPatient {
 	name: String!
+
 }
 
 input NewProvider {

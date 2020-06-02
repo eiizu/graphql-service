@@ -16,6 +16,8 @@ type Store interface {
 	FetchProvider(string) (*model.Provider, error)
 	FetchAppointment(string) (*model.Appointment, error)
 	FetchAppointments() ([]*model.Appointment, error)
+	FetchProvidersWithIDs([]string) ([]*model.Provider, error)
+	FetchAppointmentsByPatientID(string) ([]*model.Appointment, error)
 }
 
 type Resolver struct {

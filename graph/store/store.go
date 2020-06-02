@@ -216,6 +216,67 @@ func (s *Store) FetchAppointments() ([]*model.Appointment, error) {
 	return results, nil
 }
 
+func (s *Store) FetchProvidersWithIDs(ids []string) ([]*model.Provider, error) {
+	q, args, err := sqlx.In("SELECT id, name FROM providers WHERE id IN (?)", ids)
+	if err != nil {
+		return nil, err
+	}
+
+	q = sqlx.Rebind(sqlx.DOLLAR, q)
+	rows, err := s.DB.Query(q, args...)
+	if err != nil {
+		return nil, err
+	}
+
+	results := make([]*model.Provider, 0)
+	for rows.Next() {
+		var id, name string
+		if err := rows.Scan(&id, &name); err != nil {
+			return nil, err
+		}
+		result := &model.Provider{
+			ID:   id,
+			Name: name,
+		}
+
+		results = append(results, result)
+	}
+
+	return results, nil
+}
+
+func (s *Store) FetchAppointmentsByPatientID(id string) ([]*model.Appointment, error) {
+	rows, err := s.DB.Query(
+		`SELECT id, date, patientId, providerId
+		 FROM appointments
+		 WHERE patientId = $1`, id)
+	if err != nil {
+		return nil, err
+	}
+
+	results := make([]*model.Appointment, 0)
+	for rows.Next() {
+		var id, date, patientID, providerID string
+		if err := rows.Scan(&id, &date, &patientID, &providerID); err != nil {
+			return nil, err
+		}
+		result := &model.Appointment{
+			ID:   id,
+			Date: date,
+			Patient: &model.Patient{
+				ID: patientID,
+			},
+			Provider: &model.Provider{
+				ID: providerID,
+			},
+		}
+
+		results = append(results, result)
+	}
+
+	return results, nil
+}
+
 func tableExists(db *sqlx.DB, name string) (bool, error) {
 	tableExists := db.QueryRow("SELECT exists ( SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = $1)", name)
 	var exists bool

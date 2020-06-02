@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"gitlab.srconnect.io/acuevas/graphql-server/graph/dataloader"
 	"gitlab.srconnect.io/acuevas/graphql-server/graph/generated"
 	"gitlab.srconnect.io/acuevas/graphql-server/graph/model"
 )
@@ -29,14 +30,5 @@ func (r *appointmentResolver) Patient(ctx context.Context, obj *model.Appointmen
 }
 
 func (r *appointmentResolver) Provider(ctx context.Context, obj *model.Appointment) (*model.Provider, error) {
-	provider, err := r.Store.FetchProvider(obj.Provider.ID)
-	if err != nil {
-		return nil, err
-	}
-
-	if provider == nil {
-		return nil, fmt.Errorf("provider with id: %s, not found", obj.Provider.ID)
-	}
-
-	return provider, nil
+	return dataloader.GetProviderLoader(ctx).Load(obj.Provider.ID)
 }

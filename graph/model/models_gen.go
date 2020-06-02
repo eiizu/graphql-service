@@ -24,8 +24,9 @@ type NewProvider struct {
 }
 
 type Patient struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID           string         `json:"id"`
+	Name         string         `json:"name"`
+	Appointments []*Appointment `json:"appointments"`
 }
 
 type Provider struct {

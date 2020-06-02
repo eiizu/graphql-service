@@ -37,6 +37,7 @@ type Config struct {
 type ResolverRoot interface {
 	Appointment() AppointmentResolver
 	Mutation() MutationResolver
+	Patient() PatientResolver
 	Query() QueryResolver
 }
 
@@ -58,8 +59,9 @@ type ComplexityRoot struct {
 	}
 
 	Patient struct {
-		ID   func(childComplexity int) int
-		Name func(childComplexity int) int
+		Appointments func(childComplexity int) int
+		ID           func(childComplexity int) int
+		Name         func(childComplexity int) int
 	}
 
 	Provider struct {
@@ -82,6 +84,9 @@ type MutationResolver interface {
 	CreateAppointment(ctx context.Context, input model.NewAppointment) (*model.Appointment, error)
 	CreatePatient(ctx context.Context, input model.NewPatient) (*model.Patient, error)
 	CreateProvider(ctx context.Context, input model.NewProvider) (*model.Provider, error)
+}
+type PatientResolver interface {
+	Appointments(ctx context.Context, obj *model.Patient) ([]*model.Appointment, error)
 }
 type QueryResolver interface {
 	Appointments(ctx context.Context) ([]*model.Appointment, error)
@@ -167,6 +172,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateProvider(childComplexity, args["input"].(model.NewProvider)), true
+
+	case "Patient.appointments":
+		if e.complexity.Patient.Appointments == nil {
+			break
+		}
+
+		return e.complexity.Patient.Appointments(childComplexity), true
 
 	case "Patient.id":
 		if e.complexity.Patient.ID == nil {
@@ -284,6 +296,7 @@ var sources = []*ast.Source{
 	&ast.Source{Name: "graph/schema.graphqls", Input: `type Patient {
 	id: ID!
 	name: String!
+	appointments: [Appointment!]!
 }
 
 type Provider {
@@ -306,6 +319,7 @@ input NewAppointment {
 
 input NewPatient {
 	name: String!
+
 }
 
 input NewProvider {
@@ -748,6 +762,40 @@ func (ec *executionContext) _Patient_name(ctx context.Context, field graphql.Col
 	res := resTmp.(string)
 	fc.Result = res
 	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Patient_appointments(ctx context.Context, field graphql.CollectedField, obj *model.Patient) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Patient",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Patient().Appointments(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Appointment)
+	fc.Result = res
+	return ec.marshalNAppointment2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐAppointmentᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Provider_id(ctx context.Context, field graphql.CollectedField, obj *model.Provider) (ret graphql.Marshaler) {
@@ -2233,13 +2281,27 @@ func (ec *executionContext) _Patient(ctx context.Context, sel ast.SelectionSet, 
 		case "id":
 			out.Values[i] = ec._Patient_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "name":
 			out.Values[i] = ec._Patient_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
+		case "appointments":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Patient_appointments(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
