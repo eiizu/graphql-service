@@ -2,7 +2,7 @@ package store
 
 import (
 	"github.com/jmoiron/sqlx"
-	"gitlab.srconnect.io/acuevas/graphql-server/graph/model"
+	"gitlab.srconnect.io/acuevas/graphql-server/model"
 )
 
 func (s *Store) CreateProvider(provider *model.Provider) error {

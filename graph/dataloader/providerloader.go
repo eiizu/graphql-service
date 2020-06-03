@@ -3,7 +3,7 @@ package dataloader
 import (
 	"time"
 
-	"gitlab.srconnect.io/acuevas/graphql-server/graph/model"
+	"gitlab.srconnect.io/acuevas/graphql-server/model"
 )
 
 func (dl DataLoader) GetProviderLoader() ProviderLoader {

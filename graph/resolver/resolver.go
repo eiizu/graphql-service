@@ -1,7 +1,7 @@
 package resolver
 
 import (
-	"gitlab.srconnect.io/acuevas/graphql-server/graph/model"
+	"gitlab.srconnect.io/acuevas/graphql-server/model"
 )
 
 //go:generate go run github.com/99designs/gqlgen

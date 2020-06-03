@@ -1,6 +1,6 @@
 package store
 
-import "gitlab.srconnect.io/acuevas/graphql-server/graph/model"
+import "gitlab.srconnect.io/acuevas/graphql-server/model"
 
 func (s *Store) CreatePatient(patient *model.Patient) error {
 	_, err := s.DB.Exec(

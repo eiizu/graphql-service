@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"gitlab.srconnect.io/acuevas/graphql-server/graph/generated"
-	"gitlab.srconnect.io/acuevas/graphql-server/graph/model"
+	"gitlab.srconnect.io/acuevas/graphql-server/model"
 )
 
 type patientResolver struct{ *Resolver }

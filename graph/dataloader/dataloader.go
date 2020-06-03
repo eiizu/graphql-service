@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"gitlab.srconnect.io/acuevas/graphql-server/graph/model"
+	"gitlab.srconnect.io/acuevas/graphql-server/model"
 )
 
 const loadersKey = "dataloaders"

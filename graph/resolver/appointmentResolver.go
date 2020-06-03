@@ -6,7 +6,7 @@ import (
 
 	"gitlab.srconnect.io/acuevas/graphql-server/graph/dataloader"
 	"gitlab.srconnect.io/acuevas/graphql-server/graph/generated"
-	"gitlab.srconnect.io/acuevas/graphql-server/graph/model"
+	"gitlab.srconnect.io/acuevas/graphql-server/model"
 )
 
 type appointmentResolver struct{ *Resolver }

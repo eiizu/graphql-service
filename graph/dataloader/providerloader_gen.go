@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"gitlab.srconnect.io/acuevas/graphql-server/graph/model"
+	"gitlab.srconnect.io/acuevas/graphql-server/model"
 )
 
 // ProviderLoaderConfig captures the config to create a new ProviderLoader

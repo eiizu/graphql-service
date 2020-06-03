@@ -14,7 +14,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/introspection"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
-	"gitlab.srconnect.io/acuevas/graphql-server/graph/model"
+	"gitlab.srconnect.io/acuevas/graphql-server/model"
 )
 
 // region    ************************** generated!.gotpl **************************
@@ -350,7 +350,7 @@ func (ec *executionContext) field_Mutation_createAppointment_args(ctx context.Co
 	args := map[string]interface{}{}
 	var arg0 model.NewAppointment
 	if tmp, ok := rawArgs["input"]; ok {
-		arg0, err = ec.unmarshalNNewAppointment2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐNewAppointment(ctx, tmp)
+		arg0, err = ec.unmarshalNNewAppointment2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐNewAppointment(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -364,7 +364,7 @@ func (ec *executionContext) field_Mutation_createPatient_args(ctx context.Contex
 	args := map[string]interface{}{}
 	var arg0 model.NewPatient
 	if tmp, ok := rawArgs["input"]; ok {
-		arg0, err = ec.unmarshalNNewPatient2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐNewPatient(ctx, tmp)
+		arg0, err = ec.unmarshalNNewPatient2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐNewPatient(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -378,7 +378,7 @@ func (ec *executionContext) field_Mutation_createProvider_args(ctx context.Conte
 	args := map[string]interface{}{}
 	var arg0 model.NewProvider
 	if tmp, ok := rawArgs["input"]; ok {
-		arg0, err = ec.unmarshalNNewProvider2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐNewProvider(ctx, tmp)
+		arg0, err = ec.unmarshalNNewProvider2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐNewProvider(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -536,7 +536,7 @@ func (ec *executionContext) _Appointment_patient(ctx context.Context, field grap
 	}
 	res := resTmp.(*model.Patient)
 	fc.Result = res
-	return ec.marshalNPatient2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐPatient(ctx, field.Selections, res)
+	return ec.marshalNPatient2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐPatient(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Appointment_provider(ctx context.Context, field graphql.CollectedField, obj *model.Appointment) (ret graphql.Marshaler) {
@@ -570,7 +570,7 @@ func (ec *executionContext) _Appointment_provider(ctx context.Context, field gra
 	}
 	res := resTmp.(*model.Provider)
 	fc.Result = res
-	return ec.marshalNProvider2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐProvider(ctx, field.Selections, res)
+	return ec.marshalNProvider2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐProvider(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createAppointment(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -611,7 +611,7 @@ func (ec *executionContext) _Mutation_createAppointment(ctx context.Context, fie
 	}
 	res := resTmp.(*model.Appointment)
 	fc.Result = res
-	return ec.marshalNAppointment2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐAppointment(ctx, field.Selections, res)
+	return ec.marshalNAppointment2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐAppointment(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createPatient(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -652,7 +652,7 @@ func (ec *executionContext) _Mutation_createPatient(ctx context.Context, field g
 	}
 	res := resTmp.(*model.Patient)
 	fc.Result = res
-	return ec.marshalNPatient2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐPatient(ctx, field.Selections, res)
+	return ec.marshalNPatient2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐPatient(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createProvider(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -693,7 +693,7 @@ func (ec *executionContext) _Mutation_createProvider(ctx context.Context, field 
 	}
 	res := resTmp.(*model.Provider)
 	fc.Result = res
-	return ec.marshalNProvider2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐProvider(ctx, field.Selections, res)
+	return ec.marshalNProvider2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐProvider(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Patient_id(ctx context.Context, field graphql.CollectedField, obj *model.Patient) (ret graphql.Marshaler) {
@@ -795,7 +795,7 @@ func (ec *executionContext) _Patient_appointments(ctx context.Context, field gra
 	}
 	res := resTmp.([]*model.Appointment)
 	fc.Result = res
-	return ec.marshalNAppointment2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐAppointmentᚄ(ctx, field.Selections, res)
+	return ec.marshalNAppointment2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐAppointmentᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Provider_id(ctx context.Context, field graphql.CollectedField, obj *model.Provider) (ret graphql.Marshaler) {
@@ -897,7 +897,7 @@ func (ec *executionContext) _Query_appointments(ctx context.Context, field graph
 	}
 	res := resTmp.([]*model.Appointment)
 	fc.Result = res
-	return ec.marshalNAppointment2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐAppointmentᚄ(ctx, field.Selections, res)
+	return ec.marshalNAppointment2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐAppointmentᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_patients(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -931,7 +931,7 @@ func (ec *executionContext) _Query_patients(ctx context.Context, field graphql.C
 	}
 	res := resTmp.([]*model.Patient)
 	fc.Result = res
-	return ec.marshalNPatient2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐPatientᚄ(ctx, field.Selections, res)
+	return ec.marshalNPatient2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐPatientᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_providers(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -965,7 +965,7 @@ func (ec *executionContext) _Query_providers(ctx context.Context, field graphql.
 	}
 	res := resTmp.([]*model.Provider)
 	fc.Result = res
-	return ec.marshalNProvider2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐProviderᚄ(ctx, field.Selections, res)
+	return ec.marshalNProvider2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐProviderᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2662,11 +2662,11 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 
 // region    ***************************** type.gotpl *****************************
 
-func (ec *executionContext) marshalNAppointment2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐAppointment(ctx context.Context, sel ast.SelectionSet, v model.Appointment) graphql.Marshaler {
+func (ec *executionContext) marshalNAppointment2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐAppointment(ctx context.Context, sel ast.SelectionSet, v model.Appointment) graphql.Marshaler {
 	return ec._Appointment(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNAppointment2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐAppointmentᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Appointment) graphql.Marshaler {
+func (ec *executionContext) marshalNAppointment2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐAppointmentᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Appointment) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -2690,7 +2690,7 @@ func (ec *executionContext) marshalNAppointment2ᚕᚖgitlabᚗsrconnectᚗioᚋ
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNAppointment2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐAppointment(ctx, sel, v[i])
+			ret[i] = ec.marshalNAppointment2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐAppointment(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -2703,7 +2703,7 @@ func (ec *executionContext) marshalNAppointment2ᚕᚖgitlabᚗsrconnectᚗioᚋ
 	return ret
 }
 
-func (ec *executionContext) marshalNAppointment2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐAppointment(ctx context.Context, sel ast.SelectionSet, v *model.Appointment) graphql.Marshaler {
+func (ec *executionContext) marshalNAppointment2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐAppointment(ctx context.Context, sel ast.SelectionSet, v *model.Appointment) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -2741,23 +2741,23 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 	return res
 }
 
-func (ec *executionContext) unmarshalNNewAppointment2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐNewAppointment(ctx context.Context, v interface{}) (model.NewAppointment, error) {
+func (ec *executionContext) unmarshalNNewAppointment2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐNewAppointment(ctx context.Context, v interface{}) (model.NewAppointment, error) {
 	return ec.unmarshalInputNewAppointment(ctx, v)
 }
 
-func (ec *executionContext) unmarshalNNewPatient2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐNewPatient(ctx context.Context, v interface{}) (model.NewPatient, error) {
+func (ec *executionContext) unmarshalNNewPatient2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐNewPatient(ctx context.Context, v interface{}) (model.NewPatient, error) {
 	return ec.unmarshalInputNewPatient(ctx, v)
 }
 
-func (ec *executionContext) unmarshalNNewProvider2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐNewProvider(ctx context.Context, v interface{}) (model.NewProvider, error) {
+func (ec *executionContext) unmarshalNNewProvider2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐNewProvider(ctx context.Context, v interface{}) (model.NewProvider, error) {
 	return ec.unmarshalInputNewProvider(ctx, v)
 }
 
-func (ec *executionContext) marshalNPatient2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐPatient(ctx context.Context, sel ast.SelectionSet, v model.Patient) graphql.Marshaler {
+func (ec *executionContext) marshalNPatient2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐPatient(ctx context.Context, sel ast.SelectionSet, v model.Patient) graphql.Marshaler {
 	return ec._Patient(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNPatient2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐPatientᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Patient) graphql.Marshaler {
+func (ec *executionContext) marshalNPatient2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐPatientᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Patient) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -2781,7 +2781,7 @@ func (ec *executionContext) marshalNPatient2ᚕᚖgitlabᚗsrconnectᚗioᚋacue
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNPatient2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐPatient(ctx, sel, v[i])
+			ret[i] = ec.marshalNPatient2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐPatient(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -2794,7 +2794,7 @@ func (ec *executionContext) marshalNPatient2ᚕᚖgitlabᚗsrconnectᚗioᚋacue
 	return ret
 }
 
-func (ec *executionContext) marshalNPatient2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐPatient(ctx context.Context, sel ast.SelectionSet, v *model.Patient) graphql.Marshaler {
+func (ec *executionContext) marshalNPatient2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐPatient(ctx context.Context, sel ast.SelectionSet, v *model.Patient) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -2804,11 +2804,11 @@ func (ec *executionContext) marshalNPatient2ᚖgitlabᚗsrconnectᚗioᚋacuevas
 	return ec._Patient(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNProvider2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐProvider(ctx context.Context, sel ast.SelectionSet, v model.Provider) graphql.Marshaler {
+func (ec *executionContext) marshalNProvider2gitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐProvider(ctx context.Context, sel ast.SelectionSet, v model.Provider) graphql.Marshaler {
 	return ec._Provider(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNProvider2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐProviderᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Provider) graphql.Marshaler {
+func (ec *executionContext) marshalNProvider2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐProviderᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Provider) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -2832,7 +2832,7 @@ func (ec *executionContext) marshalNProvider2ᚕᚖgitlabᚗsrconnectᚗioᚋacu
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNProvider2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐProvider(ctx, sel, v[i])
+			ret[i] = ec.marshalNProvider2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐProvider(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -2845,7 +2845,7 @@ func (ec *executionContext) marshalNProvider2ᚕᚖgitlabᚗsrconnectᚗioᚋacu
 	return ret
 }
 
-func (ec *executionContext) marshalNProvider2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋgraphᚋmodelᚐProvider(ctx context.Context, sel ast.SelectionSet, v *model.Provider) graphql.Marshaler {
+func (ec *executionContext) marshalNProvider2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐProvider(ctx context.Context, sel ast.SelectionSet, v *model.Provider) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
