@@ -10,7 +10,7 @@ import (
 	"gitlab.srconnect.io/acuevas/graphql-server/graph/dataloader"
 	"gitlab.srconnect.io/acuevas/graphql-server/graph/generated"
 	"gitlab.srconnect.io/acuevas/graphql-server/graph/resolver"
-	"gitlab.srconnect.io/acuevas/graphql-server/graph/store"
+	"gitlab.srconnect.io/acuevas/graphql-server/store"
 )
 
 const defaultPort = "8080"
