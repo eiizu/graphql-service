@@ -70,8 +70,11 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
+		Appointment  func(childComplexity int, id string) int
 		Appointments func(childComplexity int) int
+		Patient      func(childComplexity int, id string) int
 		Patients     func(childComplexity int) int
+		Provider     func(childComplexity int, id string) int
 		Providers    func(childComplexity int) int
 	}
 }
@@ -91,7 +94,10 @@ type PatientResolver interface {
 type QueryResolver interface {
 	Appointments(ctx context.Context) ([]*model.Appointment, error)
 	Patients(ctx context.Context) ([]*model.Patient, error)
+	Appointment(ctx context.Context, id string) (*model.Appointment, error)
+	Patient(ctx context.Context, id string) (*model.Patient, error)
 	Providers(ctx context.Context) ([]*model.Provider, error)
+	Provider(ctx context.Context, id string) (*model.Provider, error)
 }
 
 type executableSchema struct {
@@ -208,6 +214,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Provider.Name(childComplexity), true
 
+	case "Query.appointment":
+		if e.complexity.Query.Appointment == nil {
+			break
+		}
+
+		args, err := ec.field_Query_appointment_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Appointment(childComplexity, args["id"].(string)), true
+
 	case "Query.appointments":
 		if e.complexity.Query.Appointments == nil {
 			break
@@ -215,12 +233,36 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Appointments(childComplexity), true
 
+	case "Query.patient":
+		if e.complexity.Query.Patient == nil {
+			break
+		}
+
+		args, err := ec.field_Query_patient_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Patient(childComplexity, args["id"].(string)), true
+
 	case "Query.patients":
 		if e.complexity.Query.Patients == nil {
 			break
 		}
 
 		return e.complexity.Query.Patients(childComplexity), true
+
+	case "Query.provider":
+		if e.complexity.Query.Provider == nil {
+			break
+		}
+
+		args, err := ec.field_Query_provider_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.Provider(childComplexity, args["id"].(string)), true
 
 	case "Query.providers":
 		if e.complexity.Query.Providers == nil {
@@ -293,18 +335,7 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
-	&ast.Source{Name: "graph/schema.graphqls", Input: `type Patient {
-	id: ID!
-	name: String!
-	appointments: [Appointment!]!
-}
-
-type Provider {
-	id: ID!
-	name: String!
-}
-
-type Appointment {
+	&ast.Source{Name: "graph/appointment.graphqls", Input: `type Appointment {
 	id: ID!
 	date: String!
 	patient: Patient!
@@ -316,26 +347,40 @@ input NewAppointment {
 	patientId: String!
 	providerId: String!
 }
+`, BuiltIn: false},
+	&ast.Source{Name: "graph/mutation.graphqls", Input: `type Mutation {
+	createAppointment(input:NewAppointment!): Appointment!
+	createPatient(input:NewPatient!): Patient!
+	createProvider(input:NewProvider!): Provider!
+}
+`, BuiltIn: false},
+	&ast.Source{Name: "graph/patient.graphqls", Input: `type Patient {
+	id: ID!
+	name: String!
+	appointments: [Appointment!]!
+}
 
 input NewPatient {
 	name: String!
-
+}
+`, BuiltIn: false},
+	&ast.Source{Name: "graph/provider.graphqls", Input: `type Provider {
+	id: ID!
+	name: String!
 }
 
 input NewProvider {
 	name: String!
 }
 
-type Query {
+`, BuiltIn: false},
+	&ast.Source{Name: "graph/query.graphqls", Input: `type Query {
 	appointments: [Appointment!]!
 	patients: [Patient!]!
+	appointment(id: ID!): Appointment!
+	patient(id: ID!): Patient!
 	providers: [Provider!]!
-}
-
-type Mutation {
-	createAppointment(input:NewAppointment!): Appointment!
-	createPatient(input:NewPatient!): Patient!
-	createProvider(input:NewProvider!): Provider!
+	provider(id: ID!): Provider!
 }
 `, BuiltIn: false},
 }
@@ -398,6 +443,48 @@ func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs
 		}
 	}
 	args["name"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_appointment_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_patient_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_provider_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
 	return args, nil
 }
 
@@ -934,6 +1021,88 @@ func (ec *executionContext) _Query_patients(ctx context.Context, field graphql.C
 	return ec.marshalNPatient2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐPatientᚄ(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Query_appointment(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_appointment_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Appointment(rctx, args["id"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Appointment)
+	fc.Result = res
+	return ec.marshalNAppointment2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐAppointment(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_patient(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_patient_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Patient(rctx, args["id"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Patient)
+	fc.Result = res
+	return ec.marshalNPatient2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐPatient(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Query_providers(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -966,6 +1135,47 @@ func (ec *executionContext) _Query_providers(ctx context.Context, field graphql.
 	res := resTmp.([]*model.Provider)
 	fc.Result = res
 	return ec.marshalNProvider2ᚕᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐProviderᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_provider(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:   "Query",
+		Field:    field,
+		Args:     nil,
+		IsMethod: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_provider_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Provider(rctx, args["id"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Provider)
+	fc.Result = res
+	return ec.marshalNProvider2ᚖgitlabᚗsrconnectᚗioᚋacuevasᚋgraphqlᚑserverᚋmodelᚐProvider(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -2388,6 +2598,34 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				}
 				return res
 			})
+		case "appointment":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_appointment(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "patient":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_patient(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		case "providers":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -2397,6 +2635,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_providers(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "provider":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_provider(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}

@@ -1,0 +1,12 @@
+type Appointment {
+	id: ID!
+	date: String!
+	patient: Patient!
+	provider: Provider!
+}
+
+input NewAppointment {
+	date: String!
+	patientId: String!
+	providerId: String!
+}

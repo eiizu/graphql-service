@@ -1,5 +1,8 @@
 package resolver
 
+// This file will be automatically regenerated based on the schema, any resolver implementations
+// will be copied through when generating and any unknown code will be moved to the end.
+
 import (
 	"context"
 	"fmt"
@@ -9,13 +12,6 @@ import (
 	"gitlab.srconnect.io/acuevas/graphql-server/graph/generated"
 	"gitlab.srconnect.io/acuevas/graphql-server/model"
 )
-
-type mutationResolver struct{ *Resolver }
-
-// Mutation returns generated.MutationResolver implementation.
-func (r *Resolver) Mutation() generated.MutationResolver {
-	return &mutationResolver{r}
-}
 
 func (r *mutationResolver) CreateAppointment(ctx context.Context, input model.NewAppointment) (*model.Appointment, error) {
 	patient, err := r.Store.FetchPatient(input.PatientID)
@@ -78,3 +74,8 @@ func (r *mutationResolver) CreateProvider(ctx context.Context, input model.NewPr
 
 	return provider, nil
 }
+
+// Mutation returns generated.MutationResolver implementation.
+func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
+
+type mutationResolver struct{ *Resolver }

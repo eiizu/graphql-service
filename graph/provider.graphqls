@@ -1,0 +1,9 @@
+type Provider {
+	id: ID!
+	name: String!
+}
+
+input NewProvider {
+	name: String!
+}
+

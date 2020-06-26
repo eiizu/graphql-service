@@ -1,0 +1,9 @@
+type Patient {
+	id: ID!
+	name: String!
+	appointments: [Appointment!]!
+}
+
+input NewPatient {
+	name: String!
+}

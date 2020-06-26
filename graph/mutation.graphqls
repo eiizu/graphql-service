@@ -1,0 +1,5 @@
+type Mutation {
+	createAppointment(input:NewAppointment!): Appointment!
+	createPatient(input:NewPatient!): Patient!
+	createProvider(input:NewProvider!): Provider!
+}

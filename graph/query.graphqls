@@ -1,0 +1,8 @@
+type Query {
+	appointments: [Appointment!]!
+	patients: [Patient!]!
+	appointment(id: ID!): Appointment!
+	patient(id: ID!): Patient!
+	providers: [Provider!]!
+	provider(id: ID!): Provider!
+}
